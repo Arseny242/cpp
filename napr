@@ -329,27 +329,33 @@ void InsertRight(int index, ltem data)
     }
 };
 int main()
-{DoubleLinkedList <string> l,l1; int k=0;
+{DoubleLinkedList <string> l; int k=0,t=0;
 string value;
+ifstream in("input1.txt");
+ofstream out("output.txt");
 while(in>>value)
 {
     l.InsertRight(l.GetLength(), value);
 }
+
  for (int i=1; i<=l.GetLength(); i++)
 {
-    for (int j=1; j<=l.GetLength(); j++)
+ for (int j=1; j<=l.GetLength(); j++ )
     {
         if (l.Get(i)==l.Get(j))
-            k++;
-    }
+            k++;}
+
 if (k==1)
 {
-    l1.InsertRight(l1.GetLength(), l.Get(i));
+     l.InsertRight(l.GetLength(), l.Get(i)); t++;
 }
 k=0;
 }
-l1.PrintLeftToRight();
-l1.~DoubleLinkedList();
-out.close();
+for (int i=1; i<=(l.GetLength()-t); )
+    l.Remove(i);
+l.PrintLeftToRight();
+l.~DoubleLinkedList();
+in.close();
 return 0;
 }
+
