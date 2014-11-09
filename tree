@@ -1,0 +1,85 @@
+#include <fstream>
+#include <iostream>
+using namespace std;
+ifstream in("input1.txt");
+ofstream out("output.txt");
+struct tree
+{
+  int inf;
+  tree *left, *right;
+};
+tree *root;
+
+void add (int x, tree *&root)
+{if (!root)
+{
+  root=new tree;
+    root->inf=x;
+    root->left=root->right=NULL;
+}
+ else if (x<root->inf)
+   add(x,root->left);
+         else
+       if (x>root->inf)
+         add(x,root->right);
+}
+void del1(tree *root,  tree *&current)
+{
+  if (current->right)
+    del1(root,current->right);
+      else
+        {
+          root->inf=current->inf;
+          tree *q=current;
+          current=current->left;
+          delete q;
+  }
+}
+
+void del(int x, tree *&root)
+{tree *q;
+  if (!root) cout<<"error";
+  else if (x<root->inf) del(x,root->left);
+       else if (x>root->inf) del(x, root->right);
+      else
+    {q=root;
+      if (root->left==NULL)
+      {
+        root=root->right;
+        delete q;
+      }
+      else if (root->right==NULL) {root=root->left; delete q;}
+           else del1(root, root->left);
+      }}
+
+void deleteTree(tree *&root)
+{ if (root)
+   {deleteTree(root->left);
+    deleteTree(root->right);
+    delete root;
+    root=NULL;}
+ }
+
+void printList(tree *root)
+{if (root)
+
+  {
+    printList(root->left);
+ cout<<root->inf<<" ";
+     printList(root->right);
+  }
+}
+  int main()
+{
+  int x;
+  while (!in.eof())
+  {
+    in>>x;
+    add(x,root); if (x%2!=0)
+    del(x, root);
+  }
+
+printList(root);
+deleteTree(root);
+in.close();
+}
