@@ -83,3 +83,81 @@ printList(root);
 deleteTree(root);
 in.close();
 }
+///////// ideal ////////////
+#include <fstream>
+#include <iostream>
+using namespace std;
+ifstream in("input1.txt");
+ofstream out("output.txt");
+struct tree
+{
+  int inf;
+  tree *left, *right;
+};
+tree *root;
+void create (int number, tree *&root)
+{int a;
+ if (number>0)
+    {
+      root=new tree;
+      in>>a;
+      root->inf=a;
+      root->left=root->right=NULL;
+      int numberLeft=number/2, numberRight=number-numberLeft-1;
+      create(numberLeft, root->left);
+      create(numberRight, root->right); }
+}
+void deleteTree(tree *&root)
+{ if (root)
+   {deleteTree(root->left);
+    deleteTree(root->right);
+    delete root;
+    root=NULL;}
+ }
+void  printt (tree *root)
+ {
+     if (root!=0)
+     { cout<<root->inf<<" ";
+    printt(root->left);
+         printt(root->right);
+     }
+ }
+int minimum(tree *root) {
+  tree *current = root;
+  while (current->left != NULL) {
+    current = current->left;
+  }
+  return(current->inf);
+}
+int maximum(tree *root) {
+  tree *current = root;
+
+  while (current->right != NULL) {
+    current = current->right;
+  }
+ return(current->inf);
+}
+bool thisIsTree(tree *root) {
+  if (root==NULL) return (true);
+  if (root->left!=NULL && maximum(root->left) > root->inf)
+    return(false);
+  if (root->right!=NULL && minimum(root->right) < root->inf)
+    return(false);
+  if (!thisIsTree(root->left) || !thisIsTree(root->right))
+    return(false);
+  return (true);
+}
+int main()
+{int n;
+  in>>n;
+  create(n,root);
+  printt(root); cout<<endl;
+
+if (thisIsTree(root)) {
+    cout<<"Yavlyaetsya";
+} else {
+    cout<<"Ne yavlyaetsya";
+}
+deleteTree(root);
+in.close();
+}
